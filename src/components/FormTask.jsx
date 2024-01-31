@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 const FormTask = ({ onFormSubmit, lastId }) => {
     const [data, setData] = useState({
-        id: lastId,
+        id: parseInt(lastId),
         title: '',
         description: '',
         hasFinish: false,
