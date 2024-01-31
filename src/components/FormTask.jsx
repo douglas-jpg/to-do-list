@@ -1,7 +1,14 @@
+import { FaRegCalendarPlus } from 'react-icons/fa';
+
 const FormTask = () => {
     return (
         <form>
-            <h3>Insira a sua tarefa:</h3>
+            <h3>
+                <span>
+                    <FaRegCalendarPlus />
+                </span>
+                Insira a sua tarefa:
+            </h3>
             <label htmlFor='titulo'>Nome da tarefa:</label>
             <input
                 type='text'
@@ -10,13 +17,12 @@ const FormTask = () => {
                 name='titulo'
             />
             <label htmlFor='descricao'>Tarefa:</label>
-            <input
-                type='text'
-                placeholder='Digite a sua tarefa'
-                id='descricao'
+            <textarea
                 name='descricao'
-            />
-            <button type='submit'>Salvar tarefa</button>
+                id='descricao'
+                placeholder='Digite a sua tarefa'
+            ></textarea>
+            <button type='submit' className='submit'>Salvar tarefa</button>
         </form>
     );
 };

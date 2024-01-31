@@ -1,18 +1,19 @@
-import Task from "./Task"
+import Task from './Task';
 
 const TodoList = () => {
-  return (
-    <div>
-        <p>Lista de tarefas:</p>
+    return (
         <div>
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-            <Task />
+            <p className='allTask'>Lista de tarefas:</p>
+            <hr />
+            <div>
+                <Task />
+                <Task />
+                <Task />
+                <Task />
+                <Task />
+            </div>
         </div>
-    </div>
-  )
-}
+    );
+};
 
-export default TodoList
+export default TodoList;

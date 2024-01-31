@@ -1,0 +1,64 @@
+.container {
+    background-color: #365486;
+    max-width: 600px;
+    min-width: 300px;
+    border-radius: 5px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.allTask {
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.delete,
+.finish {
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+    border-radius: 10%;
+    margin: 5px 10px 20px 0;
+    font-size: 1.1em;
+    line-height: 10px;
+    text-align: center;
+}
+
+.delete {
+    background-color: #ff004d;
+}
+.delete:hover {
+    background-color: #be3144;
+}
+
+.finish {
+    background-color: #65b741;
+}
+.finish:hover {
+    background-color: #527853;
+}
+
+.submit {
+    cursor: pointer;
+    height: 40px;
+    width: 150px;
+    background-color: #7743db;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+.submit:hover {
+    background-color: #492e87;
+}
+
+.title {
+    font-size: 1.3em;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.description {
+    margin: 0;
+    min-height: 70px;
+    line-height: 25px;
+}
+
