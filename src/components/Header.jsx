@@ -1,22 +1,24 @@
 import { FaRegListAlt, FaRegBell } from 'react-icons/fa';
 
-const Header = ({ taskNumbers, allTasks }) => {
+const Header = ({ allTasks }) => {
     return (
         <header>
             <h1>To Do List</h1>
-            {taskNumbers ? (
+            {allTasks ? (
                 <>
                     <h2>
                         <span>
                             <FaRegBell />
                         </span>
-                        Você tem {taskNumbers} tarefas pendentes
+                        Você tem{' '}
+                        {allTasks.filter((task) => !task.hasFinish).length}{' '}
+                        tarefas pendentes
                     </h2>
                     <h3>
                         <span>
                             <FaRegListAlt />
                         </span>
-                        Total de {allTasks} tarefas
+                        Total de {allTasks.length} tarefas
                     </h3>
                 </>
             ) : (

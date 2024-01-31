@@ -1,9 +1,46 @@
 {
-    "tasks": [
-        {
-            "titulo": "",
-            "descricao": "",
-            "isConcluida": false
-        }
-    ]
+  "tasks": [
+    {
+      "id": 0,
+      "title": "Banho no toto",
+      "description": "Lavar e tosar o cachorro",
+      "hasFinish": false
+    },
+    {
+      "id": 1,
+      "title": "Cozinhar",
+      "description": "Fazer o almoço",
+      "hasFinish": false
+    },
+    {
+      "id": 2,
+      "title": "Lavar",
+      "description": "Lavar a casa e limpar o quarto",
+      "hasFinish": false
+    },
+    {
+      "id": 3,
+      "title": "Atividade",
+      "description": "Fazer o trabalho de portugues e de historia",
+      "hasFinish": false
+    },
+    {
+      "id": 4,
+      "title": "teste",
+      "description": "teste1",
+      "hasFinish": false
+    },
+    {
+      "id": "bb20",
+      "title": "teste2",
+      "description": "teste2",
+      "hasFinish": false
+    },
+    {
+      "id": "092d",
+      "title": "teste3",
+      "description": "teste3",
+      "hasFinish": false
+    }
+  ]
 }

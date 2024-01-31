@@ -1,13 +1,10 @@
 import { FaRegCircleCheck, FaRegTrashCan } from 'react-icons/fa6';
 
-const Task = () => {
+const Task = ({ title, description }) => {
     return (
         <div className='task'>
-            <p className='title'>Titulo da tarefa</p>
-            <p className='description'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatibus, laboriosam?
-            </p>
+            <p className='title'>{title}</p>
+            <p className='description'>{description}</p>
             <div className='btns'>
                 <button className='delete'>
                     <FaRegTrashCan />

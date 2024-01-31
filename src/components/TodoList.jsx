@@ -1,16 +1,23 @@
 import Task from './Task';
 
-const TodoList = () => {
+const TodoList = ({hasTasks}) => {
+
     return (
         <div>
             <p className='allTask'>Lista de tarefas:</p>
             <hr />
             <div>
-                <Task />
-                <Task />
-                <Task />
-                <Task />
-                <Task />
+                {hasTasks ? (
+                    hasTasks.map((task) => (
+                        <Task
+                            key={task.id}
+                            title={task.title}
+                            description={task.description}
+                        />
+                    ))
+                ) : (
+                    <p>Voce não tem tarefas</p>
+                )}
             </div>
         </div>
     );
