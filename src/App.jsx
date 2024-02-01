@@ -6,7 +6,7 @@ import './App.css';
 
 function App() {
     const URL = 'http://localhost:5000/tasks';
-    const [tasks, setTasks] = useState(null);
+    const [tasks, setTasks] = useState([]);
     const [lastId, setLastId] = useState(0);
 
     const fetchTasks = async () => {
@@ -26,7 +26,7 @@ function App() {
         }
 
         setLastId((prevId) => prevId + 1);
-        task.id = lastId;
+        task.id = toString(lastId);
 
         await fetch(URL, {
             method: 'POST',
@@ -39,11 +39,22 @@ function App() {
         fetchTasks();
     };
 
+    const handleDeletTask = async (id) => {
+        await fetch(`${URL}/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        fetchTasks();
+    };
+
     return (
         <div className='container'>
             <Header allTasks={tasks} />
             <FormTask onFormSubmit={handleFormSubmit} />
-            <TodoList hasTasks={tasks} />
+            <TodoList hasTasks={tasks} onDeleteTask={handleDeletTask} />
         </div>
     );
 }

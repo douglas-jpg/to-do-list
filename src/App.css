@@ -56,9 +56,10 @@
     cursor: pointer;
     height: 40px;
     width: 150px;
-    background-color: #7743db;
+    background-color: #a348ee;
     border-radius: 5px;
     font-size: 1.2em;
+    color: aliceblue;
 }
 .submit:hover {
     background-color: #492e87;
@@ -76,4 +77,9 @@
 .description {
     min-height: 30px;
     line-height: 25px;
+}
+
+.marked {
+    text-decoration: line-through;
+    background-color: #72819b;
 }

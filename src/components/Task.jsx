@@ -1,17 +1,23 @@
+import { useState } from 'react';
 import { FaRegCircleCheck, FaRegTrashCan } from 'react-icons/fa6';
 
-const Task = ({ title, description }) => {
+const Task = ({ title, description, onDelete }) => {
+    const [finish, setFinish] = useState(false);
+
+    const handleFinishClick = () => {
+        setFinish(!finish);
+    };
     return (
-        <div className='task'>
+        <div className={`task ${finish ? 'marked' : ''}`}>
             <div className='text'>
                 <p className='title'>{title}</p>
                 <p className='description'>{description}</p>
             </div>
             <div className='btns'>
-                <button className='delete'>
+                <button className='delete' onClick={onDelete}>
                     <FaRegTrashCan />
                 </button>
-                <button className='finish'>
+                <button className='finish' onClick={handleFinishClick}>
                     <FaRegCircleCheck />
                 </button>
             </div>

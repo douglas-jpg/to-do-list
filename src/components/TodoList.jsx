@@ -1,22 +1,22 @@
 import Task from './Task';
 
-const TodoList = ({hasTasks}) => {
-
+const TodoList = ({ hasTasks, onDeleteTask }) => {
     return (
         <div>
             <p className='allTask'>Lista de tarefas:</p>
             <hr />
             <div>
-                {hasTasks ? (
+                {hasTasks.length != 0 ? (
                     hasTasks.map((task) => (
                         <Task
                             key={task.id}
                             title={task.title}
                             description={task.description}
+                            onDelete={() => onDeleteTask(task.id)}
                         />
                     ))
                 ) : (
-                    <p>Voce não tem tarefas</p>
+                    <h3>Sem tarefas</h3>
                 )}
             </div>
         </div>
