@@ -19,6 +19,12 @@ const FormTask = ({ onFormSubmit }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onFormSubmit(data);
+        setData({
+            id: 0,
+            title: '',
+            description: '',
+            hasFinish: false,
+        });
     };
 
     return (
