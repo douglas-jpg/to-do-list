@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 const FormTask = ({ onFormSubmit }) => {
     const [data, setData] = useState({
-        id: 0,
+        id: String(Date.now()),
         title: '',
         description: '',
         hasFinish: false,
@@ -18,13 +18,13 @@ const FormTask = ({ onFormSubmit }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onFormSubmit(data);
         setData({
-            id: 0,
+            id: String(Date.now()),
             title: '',
             description: '',
             hasFinish: false,
         });
+        onFormSubmit(data);
     };
 
     return (

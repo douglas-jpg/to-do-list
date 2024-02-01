@@ -7,13 +7,11 @@ import './App.css';
 function App() {
     const URL = 'http://localhost:5000/tasks';
     const [tasks, setTasks] = useState([]);
-    const [lastId, setLastId] = useState(0);
 
     const fetchTasks = async () => {
         const response = await fetch(URL);
         const data = await response.json();
         setTasks(data);
-        setLastId(data.length);
     };
 
     useEffect(() => {
@@ -24,10 +22,6 @@ function App() {
         if (!task.title || !task.description) {
             return;
         }
-
-        setLastId((prevId) => prevId + 1);
-        task.id = toString(lastId);
-
         await fetch(URL, {
             method: 'POST',
             headers: {

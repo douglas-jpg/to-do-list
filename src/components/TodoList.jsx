@@ -13,6 +13,7 @@ const TodoList = ({ hasTasks, onDeleteTask }) => {
                             title={task.title}
                             description={task.description}
                             onDelete={() => onDeleteTask(task.id)}
+                            task={task}
                         />
                     ))
                 ) : (
