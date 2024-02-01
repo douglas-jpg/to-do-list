@@ -2,28 +2,25 @@ import { FaRegCalendarPlus } from 'react-icons/fa';
 import { useState } from 'react';
 
 const FormTask = ({ onFormSubmit }) => {
-    const [data, setData] = useState({
-        id: 0,
+    const [dataTask, setDataTask] = useState({
         title: '',
         description: '',
-        hasFinish: false,
     });
-
-    const handleInput = (e) => {
-        setData({
-            ...data,
-            [e.target.name]: e.target.value,
-        });
-    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onFormSubmit(data);
-        setData({
-            id: 0,
-            title: '',
-            description: '',
-            hasFinish: false,
+
+        if (dataTask.title.length == 0) {
+            return;
+        }
+        onFormSubmit(dataTask);
+        setDataTask({ title: '', description: '' });
+    };
+
+    const handleChange = (e) => {
+        setDataTask({
+            ...dataTask,
+            [e.target.name]: e.target.value,
         });
     };
 
@@ -41,16 +38,16 @@ const FormTask = ({ onFormSubmit }) => {
                 placeholder='Digite o titulo da tarefa'
                 id='titulo'
                 name='title'
-                value={data.title}
-                onChange={handleInput}
+                value={dataTask.title}
+                onChange={(e) => handleChange(e)}
             />
             <label htmlFor='descricao'>Tarefa:</label>
             <textarea
                 name='description'
                 id='descricao'
                 placeholder='Digite a sua tarefa'
-                value={data.description}
-                onChange={handleInput}
+                value={dataTask.description}
+                onChange={(e) => handleChange(e)}
             ></textarea>
             <button type='submit' className='submit'>
                 Salvar tarefa

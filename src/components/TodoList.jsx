@@ -1,6 +1,6 @@
 import Task from './Task';
 
-const TodoList = ({ hasTasks, onDeleteTask }) => {
+const TodoList = ({ hasTasks, onDeleteTask, onFinishTask }) => {
     return (
         <div>
             <p className='allTask'>Lista de tarefas:</p>
@@ -13,6 +13,9 @@ const TodoList = ({ hasTasks, onDeleteTask }) => {
                             title={task.title}
                             description={task.description}
                             onDelete={() => onDeleteTask(task.id)}
+                            onFinish={() =>
+                                onFinishTask(task.id, task.hasFinish)
+                            }
                         />
                     ))
                 ) : (

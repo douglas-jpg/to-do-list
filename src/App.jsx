@@ -7,26 +7,24 @@ import './App.css';
 function App() {
     const URL = 'http://localhost:5000/tasks';
     const [tasks, setTasks] = useState([]);
-    const [lastId, setLastId] = useState(0);
 
     const fetchTasks = async () => {
         const response = await fetch(URL);
         const data = await response.json();
         setTasks(data);
-        setLastId(data.length);
     };
 
     useEffect(() => {
         fetchTasks();
     }, []);
 
-    const handleFormSubmit = async (task) => {
-        if (!task.title || !task.description) {
-            return;
-        }
-
-        setLastId((prevId) => prevId + 1);
-        task.id = toString(lastId);
+    const handleFormSubmit = async (dataTask) => {
+        const task = {
+            id: String(Date.now()),
+            title: dataTask.title,
+            description: dataTask.description,
+            hasFinish: false,
+        };
 
         await fetch(URL, {
             method: 'POST',
@@ -50,11 +48,27 @@ function App() {
         fetchTasks();
     };
 
+    const handleFinishTask = async (id, currentHasFinsih) => {
+        await fetch(`${URL}/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ hasFinish: !currentHasFinsih }),
+        });
+
+        fetchTasks();
+    };
+
     return (
         <div className='container'>
             <Header allTasks={tasks} />
             <FormTask onFormSubmit={handleFormSubmit} />
-            <TodoList hasTasks={tasks} onDeleteTask={handleDeletTask} />
+            <TodoList
+                hasTasks={tasks}
+                onDeleteTask={handleDeletTask}
+                onFinishTask={handleFinishTask}
+            />
         </div>
     );
 }
