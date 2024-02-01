@@ -1,9 +1,9 @@
 import { FaRegCalendarPlus } from 'react-icons/fa';
 import { useState } from 'react';
 
-const FormTask = ({ onFormSubmit, lastId }) => {
+const FormTask = ({ onFormSubmit }) => {
     const [data, setData] = useState({
-        id: parseInt(lastId),
+        id: 0,
         title: '',
         description: '',
         hasFinish: false,
@@ -18,7 +18,6 @@ const FormTask = ({ onFormSubmit, lastId }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         onFormSubmit(data);
     };
 
