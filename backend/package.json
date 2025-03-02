@@ -1,0 +1,44 @@
+{
+    "name": "todo-backend",
+    "version": "1.0.0",
+    "description": "backend para uma aplicação de lista de tarefas",
+    "main": "src/index.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "tsx watch src/index.ts",
+        "build": "tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/douglas-jpg/to-do-list.git#main"
+    },
+    "keywords": [
+        "todolist",
+        "backend",
+        "node",
+        "express",
+        "typescript"
+    ],
+    "author": "douglas lima",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/douglas-jpg/to-do-list/issues"
+    },
+    "homepage": "https://github.com/douglas-jpg/to-do-list/tree/main#readme",
+    "devDependencies": {
+        "@types/cors": "^2.8.17",
+        "@types/express": "^5.0.0",
+        "@types/node": "^22.13.8",
+        "nodemon": "^3.1.9",
+        "ts-node": "^10.9.2",
+        "tsx": "^4.19.3",
+        "typescript": "^5.8.2"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2",
+        "mongoose": "^8.11.0"
+    }
+}
+
