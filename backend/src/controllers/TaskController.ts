@@ -17,4 +17,19 @@ export class TaskController implements ITaskController {
             };
         }
     }
+
+    async getTaskById(id: string) {
+        try {
+            const task = await this.TaskRepository.getTaskById(id);
+            return {
+                statusCode: 200,
+                data: task,
+            };
+        } catch (error) {
+            return {
+                statusCode: 500,
+                data: `Algo deu Errado: ${error}`,
+            };
+        }
+    }
 }
