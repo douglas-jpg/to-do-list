@@ -1,19 +1,5 @@
-import { Schema, model, Document } from 'mongoose';
-
-enum TaskPriority {
-    LOW = 'baixa',
-    MEDIUM = 'média',
-    HIGH = 'alta',
-}
-
-export interface ITask extends Document {
-    title: string;
-    description?: string;
-    done: boolean;
-    priority: TaskPriority;
-    createdAt: Date;
-    updatedAt: Date;
-}
+import { Schema, model } from 'mongoose';
+import { ITask, TaskPriority } from '../@types/tasks';
 
 const TaskSchema = new Schema(
     {
