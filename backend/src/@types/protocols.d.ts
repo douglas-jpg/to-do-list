@@ -1,8 +1,16 @@
+import { MongoClient as Mongo } from 'mongodb';
 import { ITask } from './tasks';
 
 export interface HttpResponse<T> {
     statusCode: number;
     data: T | string;
+}
+
+export interface IMongoClient {
+    client: Mongo | null;
+    db: Db | null;
+    connect(): Promise<void>;
+    disconnect(): Promise<void>;
 }
 
 export interface ITaskRepository {
