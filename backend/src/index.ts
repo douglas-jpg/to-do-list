@@ -43,6 +43,21 @@ const main = async () => {
         res.status(statusCode).send(data);
     });
 
+    app.post('/task', async (req: Request, res: Response) => {
+        const { title, description, priority } = req.body;
+        const taskRepository = new TaskRepository();
+        const taskService = new TaskService(taskRepository);
+        const tasksController = new TaskController(taskService);
+
+        const { data, statusCode } = await tasksController.createTask({
+            title,
+            description,
+            priority,
+        });
+
+        res.status(statusCode).send(data);
+    });
+
     const PORT = process.env.PORT || 3000;
 
     app.listen(PORT, () => {

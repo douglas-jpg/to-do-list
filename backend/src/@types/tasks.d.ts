@@ -6,7 +6,7 @@ export enum TaskPriority {
     HIGH = 'alta',
 }
 
-export interface ITask extends Document {
+export interface ITask {
     id: string;
     title: string;
     description?: string;
@@ -14,4 +14,10 @@ export interface ITask extends Document {
     priority: TaskPriority;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface ICreateTaskParams {
+    title: string;
+    description?: string;
+    priority: TaskPriority;
 }

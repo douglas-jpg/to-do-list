@@ -1,5 +1,5 @@
 import { MongoClient as Mongo } from 'mongodb';
-import { ITask } from './tasks';
+import { ICreateTaskParams, ITask } from './tasks';
 
 export interface HttpResponse<T> {
     statusCode: number;
@@ -16,14 +16,17 @@ export interface IMongoClient {
 export interface ITaskRepository {
     listAllTasks(): Promise<ITask[]>;
     getTaskById(id: string): Promise<ITask>;
+    createTask(ITaks): Promise<ITask>;
 }
 
 export interface ITaskService {
     listAllTasks(): Promise<ITask[]>;
     getTaskById(id: string): Promise<ITask>;
+    createTask(param: ICreateTaskParams): Promise<ITask>;
 }
 
 export interface ITaskController {
     listAllTask(): Promise<HttpResponse<ITask[]>>;
     getTaskById(id: string): Promise<HttpResponse<ITask>>;
+    createTask(param: ICreateTaskParams): Promise;
 }
