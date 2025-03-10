@@ -64,17 +64,17 @@ router.delete('/task/:id', async (req: Request, res: Response) => {
     }
 });
 
-// router.put('/task/:id', async (req: Request, res: Response) => {
-//     try {
-//         const { id } = req.params;
-//         const { title, description, priority } = req.body;
-//         const { data, statusCode } = await tasksController.updateTask(id, {
-//             title,
-//             description,
-//             priority,
-//         });
-//         res.status(statusCode).send(data);
-//     } catch (error) {
-//         res.status(500).send(`Erro interno: ${(error as Error).message}`);
-//     }
-// });
+router.put('/task/:id', async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { title, description, priority } = req.body;
+        const { data, statusCode } = await tasksController.updateTask(id, {
+            title,
+            description,
+            priority,
+        });
+        res.status(statusCode).send(data);
+    } catch (error) {
+        res.status(500).send(`Erro interno: ${(error as Error).message}`);
+    }
+});
