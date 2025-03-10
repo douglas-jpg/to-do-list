@@ -1,12 +1,9 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
 import { MongoClient } from './database/mongo';
-
-import { TaskController } from './controllers/TaskController';
-import { TaskService } from './services/TaskService';
-import { TaskRepository } from './repositories/TaskRepository';
+import { router } from './routes/routes';
 
 dotenv.config();
 
@@ -18,48 +15,9 @@ const main = async () => {
 
     await MongoClient.connect();
 
-    app.get('/', (req: Request, res: Response) => {
-        res.send('Hello World');
-    });
-
-    app.get('/tasks', async (req: Request, res: Response) => {
-        const taskRepository = new TaskRepository();
-        const taskService = new TaskService(taskRepository);
-        const tasksController = new TaskController(taskService);
-
-        const { data, statusCode } = await tasksController.listAllTask();
-
-        res.status(statusCode).send(data);
-    });
-
-    app.get('/tasks/:id', async (req: Request, res: Response) => {
-        const { id } = req.params;
-        const taskRepository = new TaskRepository();
-        const taskService = new TaskService(taskRepository);
-        const tasksController = new TaskController(taskService);
-
-        const { data, statusCode } = await tasksController.getTaskById(id);
-
-        res.status(statusCode).send(data);
-    });
-
-    app.post('/task', async (req: Request, res: Response) => {
-        const { title, description, priority } = req.body;
-        const taskRepository = new TaskRepository();
-        const taskService = new TaskService(taskRepository);
-        const tasksController = new TaskController(taskService);
-
-        const { data, statusCode } = await tasksController.createTask({
-            title,
-            description,
-            priority,
-        });
-
-        res.status(statusCode).send(data);
-    });
+    app.use(router);
 
     const PORT = process.env.PORT || 3000;
-
     app.listen(PORT, () => {
         console.log(`Server Rodando na Porta: ${PORT}`);
         console.log(`http://localhost:${PORT}`);

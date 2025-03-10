@@ -2,7 +2,7 @@ import { Document } from 'mongoose';
 
 export enum TaskPriority {
     LOW = 'baixa',
-    MEDIUM = 'média',
+    MEDIUM = 'media',
     HIGH = 'alta',
 }
 
