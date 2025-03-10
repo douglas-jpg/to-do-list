@@ -62,4 +62,19 @@ export class TaskController implements ITaskController {
             );
         }
     }
+
+    async updateTask(id: string, param: ICreateTaskParams) {
+        try {
+            const updatedTask = await this.taskService.updateTask(id, param);
+            return {
+                statusCode: 200,
+                data: updatedTask,
+            };
+        } catch (error) {
+            return {
+                statusCode: 500,
+                data: `Erro interno: ${(error as Error).message}`,
+            };
+        }
+    }
 }
