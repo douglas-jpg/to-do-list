@@ -54,15 +54,15 @@ router.post('/task', async (req: Request, res: Response) => {
     }
 });
 
-// router.delete('/task/:id', async (req: Request, res: Response) => {
-//     try {
-//         const { id } = req.params;
-//         const { data, statusCode } = await tasksController.deleteTask(id);
-//         res.status(statusCode).send(data);
-//     } catch (error) {
-//         res.status(500).send(`Erro interno: ${(error as Error).message}`);
-//     }
-// });
+router.delete('/task/:id', async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { data, statusCode } = await tasksController.deleteTask(id);
+        res.status(statusCode).send(data);
+    } catch (error) {
+        res.status(500).send(`Erro interno: ${(error as Error).message}`);
+    }
+});
 
 // router.put('/task/:id', async (req: Request, res: Response) => {
 //     try {
