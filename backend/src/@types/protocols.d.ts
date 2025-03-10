@@ -17,16 +17,19 @@ export interface ITaskRepository {
     listAllTasks(): Promise<ITask[]>;
     getTaskById(id: string): Promise<ITask>;
     createTask(ITaks): Promise<ITask>;
+    deleteTask(id: string): Promise<ITask>;
 }
 
 export interface ITaskService {
     listAllTasks(): Promise<ITask[]>;
     getTaskById(id: string): Promise<ITask>;
     createTask(param: ICreateTaskParams): Promise<ITask>;
+    deleteTask(id: string): Promise<ITask>;
 }
 
 export interface ITaskController {
     listAllTask(): Promise<HttpResponse<ITask[]>>;
     getTaskById(id: string): Promise<HttpResponse<ITask>>;
-    createTask(param: ICreateTaskParams): Promise;
+    createTask(param: ICreateTaskParams): Promise<HttpResponse<ITask>>;
+    deleteTask(id: string): Promise<HttpResponse<ITask>>;
 }

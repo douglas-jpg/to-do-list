@@ -70,4 +70,20 @@ export class TaskService implements ITaskService {
             );
         }
     }
+
+    deleteTask(id: string): Promise<ITask> {
+        try {
+            if (!id) throw new Error('ID inválido');
+
+            const task = this.taskRepository.getTaskById(id);
+            if (!task) throw new Error('Tarefa não encontrada');
+
+            return this.taskRepository.deleteTask(id);
+
+        } catch (error) {
+            throw new Error(
+                `Falha ao deletar tarefa: ${(error as Error).message}`
+            );
+        }
+    }
 }
