@@ -48,4 +48,18 @@ export class TaskController implements ITaskController {
             };
         }
     }
+
+    async deleteTask(id: string) {
+        try {
+            const task = await this.taskService.deleteTask(id);
+            return {
+                statusCode: 200,
+                data: task,
+            };
+        } catch (error) {
+            throw new Error(
+                `Erro ao deletar task: ${(error as Error).message}`
+            );
+        }
+    }
 }
