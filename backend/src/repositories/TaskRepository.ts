@@ -78,4 +78,28 @@ export class TaskRepository implements ITaskRepository {
             );
         }
     }
+
+    async updateTask(id: string, task: Partial<ITask>): Promise<ITask> {
+        try {
+            await MongoClient.db
+                .collection('tasks')
+                .updateOne({ _id: new ObjectId(id) }, { $set: task });
+
+            const updatedTask = await MongoClient.db
+                .collection<Omit<ITask, 'id'>>('tasks')
+                .findOne({ _id: new ObjectId(id) });
+
+            if (!updatedTask) {
+                throw new Error('Erro ao atualizar task');
+            }
+
+            const { _id, ...rest } = updatedTask;
+
+            return { id: _id.toHexString(), ...rest };
+        } catch (error) {
+            throw new Error(
+                `Erro ao atualizar task: ${(error as Error).message}`
+            );
+        }
+    }
 }
