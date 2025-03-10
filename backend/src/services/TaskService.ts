@@ -136,4 +136,25 @@ export class TaskService implements ITaskService {
             );
         }
     }
+
+    async markTaskAsDone(id: string): Promise<ITask> {
+        try {
+            if (!id) throw new Error('ID inválido');
+
+            const task = await this.taskRepository.getTaskById(id);
+            if (!task) throw new Error('Tarefa não encontrada');
+
+
+            const updateData = {
+                done: !task.done,
+                updatedAt: new Date(),
+            };
+
+            return await this.taskRepository.markTaskAsDone(id, updateData);
+        } catch (error) {
+            throw new Error(
+                `Falha ao marcar tarefa: ${(error as Error).message}`
+            );
+        }
+    }
 }

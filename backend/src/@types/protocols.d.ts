@@ -19,6 +19,7 @@ export interface ITaskRepository {
     createTask(ITaks): Promise<ITask>;
     deleteTask(id: string): Promise<ITask>;
     updateTask(id: string, task: Partial<ITask>): Promise<ITask>;
+    markTaskAsDone(id: string, task: Partial<ITask>): Promise<ITask>;
 }
 
 export interface ITaskService {
@@ -27,6 +28,7 @@ export interface ITaskService {
     createTask(param: ICreateTaskParams): Promise<ITask>;
     deleteTask(id: string): Promise<ITask>;
     updateTask(id: string, param: ICreateTaskParams): Promise<ITask>;
+    markTaskAsDone(id: string): Promise<ITask>;
 }
 
 export interface ITaskController {
@@ -38,4 +40,5 @@ export interface ITaskController {
         id: string,
         param: ICreateTaskParams
     ): Promise<HttpResponse<ITask>>;
+    markTaskAsDone(id: string): Promise<HttpResponse<ITask>>;
 }

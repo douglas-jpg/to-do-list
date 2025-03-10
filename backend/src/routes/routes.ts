@@ -78,3 +78,13 @@ router.put('/task/:id', async (req: Request, res: Response) => {
         res.status(500).send(`Erro interno: ${(error as Error).message}`);
     }
 });
+
+router.patch('/task/:id/done', async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { data, statusCode } = await tasksController.markTaskAsDone(id);
+        res.status(statusCode).send(data);
+    } catch (error) {
+        res.status(500).send(`Erro interno: ${(error as Error).message}`);
+    }
+});

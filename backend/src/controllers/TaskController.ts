@@ -77,4 +77,19 @@ export class TaskController implements ITaskController {
             };
         }
     }
+
+    async markTaskAsDone(id: string) {
+        try {
+            const updatedTask = await this.taskService.markTaskAsDone(id);
+            return {
+                statusCode: 200,
+                data: updatedTask,
+            };
+        } catch (error) {
+            return {
+                statusCode: 500,
+                data: `Erro interno: ${(error as Error).message}`,
+            };
+        }
+    }
 }

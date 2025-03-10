@@ -102,4 +102,28 @@ export class TaskRepository implements ITaskRepository {
             );
         }
     }
+
+    async markTaskAsDone(
+        id: string,
+        updateData: Partial<ITask>
+    ): Promise<ITask> {
+        try {
+            await MongoClient.db
+                .collection('tasks')
+                .updateOne({ _id: new ObjectId(id) }, { $set: updateData });
+
+            const updatedTask = await MongoClient.db
+                .collection<Omit<ITask, 'id'>>('tasks')
+                .findOne({ _id: new ObjectId(id) });
+
+            if (!updatedTask) {
+                throw new Error('Erro ao marcar tarefa como concluída');
+            }
+
+            const { _id, ...rest } = updatedTask;
+            return { id: _id.toHexString(), ...rest };
+        } catch (error) {
+            throw new Error(`Erro no repository: ${(error as Error).message}`);
+        }
+    }
 }
