@@ -50,4 +50,32 @@ export class TaskRepository implements ITaskRepository {
             throw new Error(`Erro ao criar task: ${(error as Error).message}`);
         }
     }
+
+    async deleteTask(id: string): Promise<ITask> {
+        try {
+            const task = await MongoClient.db
+                .collection<Omit<ITask, 'id'>>('tasks')
+                .findOne({
+                    _id: new ObjectId(id),
+                });
+
+            const { deletedCount } = await MongoClient.db
+                .collection('tasks')
+                .deleteOne({
+                    _id: new ObjectId(id),
+                });
+
+            if (!deletedCount) {
+                throw new Error('Erro ao deletar task');
+            }
+
+            const { _id, ...rest } = task;
+
+            return { id: _id.toHexString(), ...rest };
+        } catch (error) {
+            throw new Error(
+                `Erro ao deletar task: ${(error as Error).message}`
+            );
+        }
+    }
 }
