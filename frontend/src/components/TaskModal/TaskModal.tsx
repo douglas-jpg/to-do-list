@@ -1,132 +1,142 @@
 import { FormEvent, useState } from 'react';
+
 import Button from '../Button/Button';
-import { ITask } from '../../@types/Tasks';
+import { createdTask, Priority } from '../../@types/Tasks';
 
-interface TaskModalProps {
-    onCancel: () => void;
-    onSave: (task: Partial<ITask>) => void;
-}
+type TaskModalProps = {
+    isOpen: boolean;
+    onClose: () => void;
+    onSave: (task: createdTask) => void;
+};
 
-const TaskModal = ({ onCancel, onSave }: TaskModalProps) => {
-    const [title, setTitle] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [priority, setPriority] = useState<'baixa' | 'media' | 'alta'>(
-        'baixa'
-    );
-    const [hasTitle, setHasTitle] = useState<boolean>(true);
+const TaskModal = ({ isOpen, onClose, onSave }: TaskModalProps) => {
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [priority, setPriority] = useState<Priority>('baixa');
+    const [touched, setTouched] = useState(false);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        if (!title.trim()) {
-            setHasTitle(false);
-            return;
-        }
+        setTouched(true);
 
-        setHasTitle(true);
-        const task = {
-            title,
-            description,
+        if (!title.trim()) return;
+
+        onSave({
+            title: title.trim(),
+            description: description.trim(),
             priority,
-        };
+        });
 
-        onSave(task);
+        onClose();
+        resetForm();
+    };
+
+    const resetForm = () => {
         setTitle('');
         setDescription('');
         setPriority('baixa');
-        onCancel();
+        setTouched(false);
     };
 
+    if (!isOpen) return null;
+
     return (
-        <div className='fixed top-0 left-0 w-full h-full bg-black/40 flex justify-center items-center z-50'>
-            <div className='bg-white w-11/12 max-w-md rounded-lg p-5 shadow-lg opacity-100'>
-                <h2 className='mb-4 text-2xl text-gray-800 font-black'>
+        <div
+            role='dialog'
+            className='fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50'
+            onClick={onClose}
+        >
+            <div
+                className='bg-white rounded-lg p-6 w-full max-w-md shadow-xl'
+                onClick={(e) => e.stopPropagation()}
+            >
+                <h2 className='text-2xl font-bold text-gray-800 mb-4'>
                     Nova Tarefa
                 </h2>
-                <form className='flex flex-col gap-6' onSubmit={handleSubmit}>
+
+                <form onSubmit={handleSubmit}>
                     <div className='mb-4'>
                         <label
-                            htmlFor='task-title'
-                            className='block mb-1 font-bold text-gray-600'
+                            htmlFor='title'
+                            className='block mb-2 font-medium text-gray-700'
                         >
-                            Título <span>*</span>
+                            Título *
                         </label>
-                        {!hasTitle && (
-                            <span className='text-red-600 text-sm'>
-                                O texto precisa ter um titulo
-                            </span>
-                        )}
                         <input
+                            id='title'
                             type='text'
-                            id='task-title'
-                            placeholder='Digite o título da tarefa'
                             value={title}
+                            placeholder='Digite o título da tarefa'
                             onChange={(e) => setTitle(e.target.value)}
-                            className='w-full p-2 border border-gray-300 rounded text-sm'
+                            className={`w-full p-2 border rounded-md ${
+                                touched && !title.trim()
+                                    ? 'border-red-500'
+                                    : 'border-gray-300'
+                            }`}
                         />
+                        {touched && !title.trim() && (
+                            <p
+                                id='title-error'
+                                className='text-red-500 text-sm mt-1'
+                            >
+                                Título é obrigatório
+                            </p>
+                        )}
                     </div>
+
                     <div className='mb-4'>
                         <label
-                            htmlFor='task-desc'
-                            className='block mb-1 font-bold text-gray-600'
+                            htmlFor='descricao'
+                            className='block mb-2 font-medium text-gray-700'
                         >
                             Descrição
                         </label>
                         <textarea
-                            id='task-desc'
-                            placeholder='Digite a descrição da tarefa'
+                            id='descricao'
                             value={description}
+                            placeholder='Digite a descrição da tarefa'
                             onChange={(e) => setDescription(e.target.value)}
-                            className='w-full p-2 border border-gray-300 rounded text-sm resize-vertical min-h-[80px]'
+                            className='w-full p-2 border border-gray-300 rounded-md min-h-[100px]'
                         />
                     </div>
-                    <div className='mb-4'>
-                        <span className='block mb-1 font-bold text-gray-600'>
-                            Prioridade:
-                        </span>
-                        <div className='flex items-center gap-4'>
-                            <label className='flex items-center'>
-                                <input
-                                    type='radio'
-                                    name='prioridade'
-                                    value='baixa'
-                                    checked={priority === 'baixa'}
-                                    onChange={() => setPriority('baixa')}
-                                    required
-                                    className='mr-1'
-                                />
-                                Baixa
-                            </label>
-                            <label className='flex items-center'>
-                                <input
-                                    type='radio'
-                                    name='prioridade'
-                                    value='media'
-                                    checked={priority === 'media'}
-                                    onChange={() => setPriority('media')}
-                                    className='mr-1'
-                                />
-                                Média
-                            </label>
-                            <label className='flex items-center'>
-                                <input
-                                    type='radio'
-                                    name='prioridade'
-                                    value='alta'
-                                    checked={priority === 'alta'}
-                                    onChange={() => setPriority('alta')}
-                                    className='mr-1'
-                                />
-                                Alta
-                            </label>
+
+                    <fieldset className='mb-6'>
+                        <legend className='block mb-2 font-medium text-gray-700'>
+                            Prioridade
+                        </legend>
+                        <div className='flex gap-4'>
+                            {(['baixa', 'media', 'alta'] as Priority[]).map(
+                                (p) => (
+                                    <label
+                                        key={p}
+                                        className='flex items-center gap-1'
+                                    >
+                                        <input
+                                            type='radio'
+                                            name='priority'
+                                            value={p}
+                                            checked={priority === p}
+                                            onChange={() => setPriority(p)}
+                                            className='h-4 w-4 text-blue-600'
+                                        />
+                                        <span className='capitalize'>{p}</span>
+                                    </label>
+                                )
+                            )}
                         </div>
-                    </div>
-                    <div className='flex justify-end gap-2'>
+                    </fieldset>
+
+                    <div className='flex justify-end gap-3'>
                         <Button
-                            primary={false}
-                            text='Cancelar'
-                            onClick={onCancel}
-                        />
-                        <Button primary text='Salvar' type='submit' />
+                            type='button'
+                            variant='secondary'
+                            onClick={onClose}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button type='submit' variant='primary'>
+                            Salvar
+                        </Button>
                     </div>
                 </form>
             </div>
