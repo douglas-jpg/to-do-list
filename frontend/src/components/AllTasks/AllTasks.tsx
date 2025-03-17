@@ -1,47 +1,24 @@
 import { useTasks } from '../../context/TaskContext';
+
 import Empty from '../Empty/Empty';
 import Loading from '../Loading/Loading';
 import TaskItem from '../TaskItem/TaskItem';
 
 const AllTasks = () => {
-    const { tasks, isLoading, toggleTask, deleteTask } = useTasks();
+    const { tasks, isLoading, error, toggleTask, deleteTask } = useTasks();
 
-    const handleToggleDone = async (id: string) => {
-        try {
-            await toggleTask(id);
-        } catch (error) {
-            console.error('Erro ao alternar status:', error);
-        }
-    };
+    if (isLoading) return <Loading className='py-8' />;
+    if (error) return <div className='text-red-500 p-4'>Erro: {error}</div>;
+    if (!tasks.length) return <Empty />;
 
-    const handleDelete = async (id: string) => {
-        try {
-            await deleteTask(id);
-        } catch (error) {
-            console.error('Erro ao alternar status:', error);
-        }
-    };
-
-    if (isLoading) {
-        return <Loading />;
-    } else if (!tasks.length) {
-        return <Empty />;
-    }
     return (
-        <ul
-            aria-live='polite'
-            className='space-y-4 max-h-80 mx-auto mt-4 overflow-auto'
-        >
+        <ul aria-live='polite' className='space-y-2 mt-4'>
             {tasks.map((task) => (
                 <TaskItem
                     key={task.id}
-                    id={task.id}
-                    title={task.title}
-                    description={task.description}
-                    priority={task.priority}
-                    done={task.done}
-                    onToggle={() => handleToggleDone(task.id)}
-                    onDelete={() => handleDelete(task.id)}
+                    task={task}
+                    onToggle={() => toggleTask(task.id)}
+                    onDelete={() => deleteTask(task.id)}
                 />
             ))}
         </ul>

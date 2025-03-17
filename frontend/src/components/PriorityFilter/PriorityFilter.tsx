@@ -2,7 +2,7 @@ import { useTasks } from '../../context/TaskContext';
 import { Priority } from '../../@types/Tasks';
 
 const PriorityFilter = () => {
-    const { selectedPriority, setSelectedPriority } = useTasks();
+    const { priorityFilter, setPriorityFilter } = useTasks();
 
     const priorities = [
         { value: 'todos', label: 'Todas' },
@@ -18,11 +18,9 @@ const PriorityFilter = () => {
                     Filtrar por prioridade:
                 </label>
                 <select
-                    value={selectedPriority}
+                    value={priorityFilter}
                     onChange={(e) =>
-                        setSelectedPriority(
-                            e.target.value as Priority | 'todos'
-                        )
+                        setPriorityFilter(e.target.value as Priority | 'todos')
                     }
                     className='border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors cursor-pointer'
                 >

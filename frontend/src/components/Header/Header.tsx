@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTasks } from '../../context/TaskContext';
 
-import { createdTask } from '../../@types/Tasks';
+import { ITask } from '../../@types/Tasks';
 
 import Button from '../Button/Button';
 import DateComponent from '../DateComponent/DateComponent';
@@ -12,7 +12,7 @@ const Header = () => {
     const { createTask } = useTasks();
     const [modalOpen, setModalOpen] = useState(false);
 
-    const handleSaveTask = (task: createdTask) => {
+    const handleSaveTask = (task: Partial<ITask>) => {
         createTask(task);
         setModalOpen(false);
     };
