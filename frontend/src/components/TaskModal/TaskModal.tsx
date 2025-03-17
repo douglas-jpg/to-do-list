@@ -1,12 +1,12 @@
 import { FormEvent, useState } from 'react';
 
 import Button from '../Button/Button';
-import { createdTask, Priority } from '../../@types/Tasks';
+import { ITask, Priority } from '../../@types/Tasks';
 
 type TaskModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    onSave: (task: createdTask) => void;
+    onSave: (task: Partial<ITask>) => void;
 };
 
 const TaskModal = ({ isOpen, onClose, onSave }: TaskModalProps) => {
