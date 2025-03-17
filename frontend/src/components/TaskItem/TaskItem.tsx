@@ -19,12 +19,12 @@ const TaskItem = ({ task, onToggle, onDelete }: TaskItemProps) => {
     return (
         <li className='group'>
             <div
-                className={`flex justify-between items-center p-4 rounded-lg gap-4 border transition-colors
-                ${
-                    done
-                        ? 'bg-gray-100 border-gray-200'
-                        : 'bg-white border-gray-300 hover:border-blue-300 hover:bg-blue-50'
-                }`}
+                className={`flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 sm:p-5 rounded-lg gap-3 sm:gap-4 border transition-colors
+    ${
+        done
+            ? 'bg-gray-100 border-gray-200'
+            : 'bg-white border-gray-300 hover:border-blue-300 hover:bg-blue-50'
+    }`}
             >
                 <div className='flex items-center gap-3 flex-1 min-w-0'>
                     <input
@@ -32,14 +32,14 @@ const TaskItem = ({ task, onToggle, onDelete }: TaskItemProps) => {
                         id={id}
                         checked={done}
                         onChange={onToggle}
-                        className='shrink-0 w-4 h-4 rounded border-gray-300 text-blue-600 
+                        className='shrink-0 w-4 h-4 mt-2 sm:mt-0 rounded border-gray-300 text-blue-600 
                             focus:ring-blue-500 cursor-pointer'
                     />
 
-                    <div className='min-w-0'>
+                    <div className='min-w-0 flex-1'>
                         <label htmlFor={id} className='cursor-pointer min-w-0'>
                             <h2
-                                className={`font-medium truncate ${
+                                className={`text-base sm:text-[15px] md:text-base font-medium truncate ${
                                     done
                                         ? 'text-gray-400 line-through'
                                         : 'text-gray-800'
@@ -49,22 +49,22 @@ const TaskItem = ({ task, onToggle, onDelete }: TaskItemProps) => {
                             </h2>
                         </label>
                         {description && (
-                            <p className='text-gray-600 text-sm mt-1 whitespace-pre-wrap break-words'>
+                            <p className='text-gray-600 text-sm sm:text-[13px] md:text-sm mt-1 whitespace-pre-wrap break-words'>
                                 {description}
                             </p>
                         )}
                     </div>
                 </div>
 
-                <div className='flex items-center gap-3 shrink-0 ml-2'>
+                <div className='flex items-center justify-between w-full sm:w-auto gap-2 sm:gap-3 ml-0 sm:ml-2'>
                     <span
-                        className={`${priorityClasses[priority]} px-3 py-2 rounded-lg text-sm font-medium border`}
+                        className={`${priorityClasses[priority]} px-2 py-1 sm:px-3 sm:py-2 text-xs sm:text-sm rounded-lg font-medium border`}
                     >
                         {priority}
                     </span>
                     <button
                         onClick={onDelete}
-                        className='p-3 text-gray-400 hover:text-red-600 rounded-xl
+                        className='p-2 sm:p-3 text-gray-400 hover:text-red-600 rounded-xl
                             hover:bg-red-100 transition-colors duration-150 cursor-pointer'
                         aria-label='Excluir tarefa'
                     >

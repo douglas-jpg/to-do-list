@@ -12,7 +12,7 @@ const AllTasks = () => {
     if (!tasks.length) return <Empty />;
 
     return (
-        <ul aria-live='polite' className='space-y-2 mt-4'>
+        <ul aria-live='polite' className='grid gap-2 sm:gap-3 mt-4'>
             {tasks.map((task) => (
                 <TaskItem
                     key={task.id}

@@ -14,9 +14,9 @@ const Button = ({ variant = 'primary', children, ...props }: ButtonProps) => {
     return (
         <button
             {...props}
-            className={`${baseStyles} ${variants[variant]} ${
-                props.className || ''
-            }`}
+            className={`w-full sm:w-auto cursor-pointer ${baseStyles} ${
+                variants[variant]
+            } ${props.className || ''}`}
         >
             {children}
         </button>

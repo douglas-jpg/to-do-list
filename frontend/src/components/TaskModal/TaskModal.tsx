@@ -43,14 +43,14 @@ const TaskModal = ({ isOpen, onClose, onSave }: TaskModalProps) => {
     return (
         <div
             role='dialog'
-            className='fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50'
+            className='fixed inset-0 bg-black/40 flex items-center justify-center p-4 sm:p-6 z-50'
             onClick={onClose}
         >
             <div
-                className='bg-white rounded-lg p-6 w-full max-w-md shadow-xl'
+                className='bg-white rounded-lg p-6 w-full max-w-md lg:max-w-lg xl:max-w-xl shadow-xl'
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className='text-2xl font-bold text-gray-800 mb-4'>
+                <h2 className='text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6'>
                     Nova Tarefa
                 </h2>
 
@@ -104,7 +104,7 @@ const TaskModal = ({ isOpen, onClose, onSave }: TaskModalProps) => {
                         <legend className='block mb-2 font-medium text-gray-700'>
                             Prioridade
                         </legend>
-                        <div className='flex gap-4'>
+                        <div className='flex flex-col sm:flex-row gap-2 sm:gap-4'>
                             {(['baixa', 'media', 'alta'] as Priority[]).map(
                                 (p) => (
                                     <label
@@ -126,7 +126,7 @@ const TaskModal = ({ isOpen, onClose, onSave }: TaskModalProps) => {
                         </div>
                     </fieldset>
 
-                    <div className='flex justify-end gap-3'>
+                    <div className='flex flex-col-reverse sm:flex-row justify-end gap-3'>
                         <Button
                             type='button'
                             variant='secondary'
@@ -134,7 +134,10 @@ const TaskModal = ({ isOpen, onClose, onSave }: TaskModalProps) => {
                         >
                             Cancelar
                         </Button>
-                        <Button type='submit' variant='primary'>
+                        <Button
+                            type='submit'
+                            variant='primary'
+                        >
                             Salvar
                         </Button>
                     </div>

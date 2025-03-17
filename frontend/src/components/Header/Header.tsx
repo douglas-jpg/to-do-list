@@ -19,15 +19,22 @@ const Header = () => {
 
     return (
         <header className='mb-6'>
-            <h1 className='text-2xl font-bold text-gray-800 mb-4'>
-                Lista de Tarefas
-            </h1>
-            <div className='flex justify-between items-center mb-4'>
-                <DateComponent />
-                <Button variant='primary' onClick={() => setModalOpen(true)}>
+            <div className='flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4'>
+                <div>
+                    <h1 className='text-xl md:text-2xl font-bold text-gray-800 mb-2'>
+                        Lista de Tarefas
+                    </h1>
+                    <DateComponent />
+                </div>
+                <Button
+                    variant='primary'
+                    onClick={() => setModalOpen(true)}
+                    className='w-full sm:w-auto'
+                >
                     Criar Tarefa
                 </Button>
             </div>
+
             <PriorityFilter />
             <hr className='border-t border-gray-300 my-4' />
 
