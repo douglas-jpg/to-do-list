@@ -5,9 +5,17 @@ import {
     ReactNode,
     useContext,
     useEffect,
+    useMemo,
     useState,
 } from 'react';
-import { ITask } from '../@types/Tasks';
+
+import {
+    ITask,
+    Priority,
+    PriorityFilter,
+    TaskContextState,
+    TaskContextType,
+} from '../@types/Tasks';
 
 const api: AxiosInstance = axios.create({
     baseURL: 'http://localhost:8080',
@@ -17,135 +25,144 @@ const api: AxiosInstance = axios.create({
     },
 });
 
-interface ITaskContext {
-    api: AxiosInstance;
-    tasks: ITask[];
-    isLoading: boolean;
-    selectedPriority: string;
-    setSelectedPriority: (priority: string) => void;
-    createTask: (task: ITask) => Promise<ITask>;
-    deleteTask: (id: string) => Promise<ITask>;
-    toggleTask: (id: string) => Promise<ITask>;
-}
+const PRIORITY_ORDER: Record<Priority, number> = {
+    alta: 3,
+    media: 2,
+    baixa: 1,
+};
 
-const TaskContext = createContext<ITaskContext | null>(null);
+const TaskContext = createContext<TaskContextType | null>(null);
 
-export const TaskContextProvider = ({ children }: { children: ReactNode }) => {
-    const [tasks, setTasks] = useState<ITask[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [selectedPriority, setSelectedPriority] = useState<string>('todos');
+export const TaskProvider = ({ children }: { children: ReactNode }) => {
+    const [state, setState] = useState<TaskContextState>({
+        tasks: [],
+        isLoading: true,
+        error: null,
+        priorityFilter: 'todos',
+    });
+
+    const sortedTasks = useMemo(() => {
+        return sortTasks(state.tasks, state.priorityFilter);
+    }, [state.tasks, state.priorityFilter]);
 
     useEffect(() => {
-        const fetchTasks = async () => {
+        const loadTasks = async () => {
             try {
-                const tasksData = await getTasks();
-                const sortedTasks = sortTasks(tasksData, selectedPriority);
-                setTasks(sortedTasks);
+                const { data } = await api.get<ITask[]>('/tasks');
+                setState((prev) => ({
+                    ...prev,
+                    tasks: data,
+                    isLoading: false,
+                    error: null,
+                }));
             } catch (error) {
-                console.error('Erro ao carregar tarefas:', error);
-            } finally {
-                setIsLoading(false);
+                handleError('Erro ao carregar tarefas:', error);
             }
         };
 
-        fetchTasks();
-    }, [selectedPriority]);
+        loadTasks();
+    }, []);
 
-    const getTasks = async (): Promise<ITask[]> => {
-        try {
-            const response = await api.get('/tasks');
-            return response.data;
-        } catch (error) {
-            console.error('Erro ao buscar tarefas:', error);
-            throw error;
-        }
+    const handleError = (message: string, error: unknown) => {
+        console.error(message, error);
+        setState((prev) => ({
+            ...prev,
+            isLoading: false,
+            error: error instanceof Error ? error.message : 'Erro desconhecido',
+        }));
     };
 
-    const createTask = async (task: Partial<ITask>) => {
+    const createTask = async (taskData: Partial<ITask>) => {
         try {
-            const response = await api.post('/task', task);
-            const newTasks = sortTasks(
-                [...tasks, response.data],
-                selectedPriority
-            );
-            setTasks(newTasks);
-            return response.data;
+            setState((prev) => ({ ...prev, isLoading: true }));
+
+            const { data } = await api.post<ITask>('/task', taskData);
+
+            setState((prev) => ({
+                ...prev,
+                tasks: [...prev.tasks, data],
+                isLoading: false,
+                error: null,
+            }));
         } catch (error) {
-            console.error('Erro ao criar tarefa:', error);
-            throw error;
+            handleError('Erro ao criar tarefa:', error);
         }
     };
 
     const deleteTask = async (id: string) => {
         try {
-            const response = await api.delete(`/task/${id}`);
-            setTasks((prevTasks) => {
-                const filteredTasks = prevTasks.filter(
-                    (task) => task.id !== id
-                );
-                return sortTasks(filteredTasks, selectedPriority);
-            });
-            return response.data;
+            setState((prev) => ({ ...prev, isLoading: true }));
+
+            await api.delete(`/task/${id}`);
+
+            setState((prev) => ({
+                ...prev,
+                tasks: prev.tasks.filter((task) => task.id !== id),
+                isLoading: false,
+            }));
         } catch (error) {
-            console.error('Erro ao deletar tarefa:', error);
-            throw error;
+            handleError('Erro ao excluir tarefa:', error);
         }
     };
 
     const toggleTask = async (id: string) => {
         try {
-            const response = await api.patch(`/task/${id}/done`);
-            const updatedTasks = tasks.map((task) =>
-                task.id === id ? response.data : task
-            );
-            setTasks(sortTasks(updatedTasks, selectedPriority));
-            return response.data;
+            setState((prev) => ({
+                ...prev,
+                tasks: prev.tasks.map((task) =>
+                    task.id === id ? { ...task, done: !task.done } : task
+                ),
+            }));
+
+            await api.patch(`/task/${id}/done`);
         } catch (error) {
-            console.error('Erro ao alternar status da tarefa:', error);
-            throw error;
+            handleError('Erro ao atualizar tarefa:', error);
+            setState((prev) => ({
+                ...prev,
+                tasks: prev.tasks.map((task) =>
+                    task.id === id ? { ...task, done: !task.done } : task
+                ),
+            }));
         }
     };
 
-    const sortTasks = (tasksToSort: ITask[], priority: string): ITask[] => {
-        const priorityOrder = { alta: 3, media: 2, baixa: 1 };
-
-        return tasksToSort.sort((a, b) => {
-            if (!a.done && b.done) return -1;
-            if (a.done && !b.done) return 1;
-
-            if (priority !== 'todos') {
-                const aIsSelected = a.priority === priority;
-                const bIsSelected = b.priority === priority;
-
-                if (aIsSelected && !bIsSelected) return -1;
-                if (!aIsSelected && bIsSelected) return 1;
-            }
-
-            return priorityOrder[b.priority] - priorityOrder[a.priority];
-        });
+    const setPriorityFilter = (priority: PriorityFilter) => {
+        setState((prev) => ({ ...prev, priorityFilter: priority }));
     };
 
-    const values = {
-        api,
-        tasks,
-        isLoading,
-        selectedPriority,
+    const value: TaskContextType = {
+        ...state,
+        tasks: sortedTasks,
+        setPriorityFilter,
         createTask,
         deleteTask,
         toggleTask,
-        setSelectedPriority,
     };
 
     return (
-        <TaskContext.Provider value={values}>{children}</TaskContext.Provider>
+        <TaskContext.Provider value={value}>{children}</TaskContext.Provider>
     );
 };
 
+const sortTasks = (tasks: ITask[], filter: PriorityFilter): ITask[] => {
+    const filteredTasks =
+        filter === 'todos'
+            ? tasks
+            : tasks.filter((task) => task.priority === filter);
+
+    return [...filteredTasks].sort((a, b) => {
+        if (!a.done && b.done) return -1;
+        if (a.done && !b.done) return 1;
+
+        return PRIORITY_ORDER[b.priority] - PRIORITY_ORDER[a.priority];
+    });
+};
+
 // eslint-disable-next-line react-refresh/only-export-components
-export const useTasks = () => {
+export const useTasks = (): TaskContextType => {
     const context = useContext(TaskContext);
     if (!context) {
-        throw new Error('useApi deve ser usado dentro de um ApiProvider');
+        throw new Error('useTasks deve ser usado dentro de um TaskProvider');
     }
     return context;
 };

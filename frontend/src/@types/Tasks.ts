@@ -10,8 +10,25 @@ export interface ITask {
     updatedAt: string;
 }
 
-export interface createdTask {
+export interface CreatedTask {
     title: string;
     description?: string;
     priority: Priority;
 }
+
+export interface TaskContextState {
+    tasks: ITask[];
+    isLoading: boolean;
+    error: string | null;
+    priorityFilter: PriorityFilter;
+}
+
+export interface TaskContextActions {
+    setPriorityFilter: (priority: PriorityFilter) => void;
+    createTask: (task: Partial<ITask>) => Promise<void>;
+    deleteTask: (id: string) => Promise<void>;
+    toggleTask: (id: string) => Promise<void>;
+}
+
+export type PriorityFilter = Priority | 'todos';
+export type TaskContextType = TaskContextState & TaskContextActions;
