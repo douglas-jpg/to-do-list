@@ -2,11 +2,13 @@
     "name": "todo-backend",
     "version": "1.0.0",
     "description": "backend para uma aplicação de lista de tarefas",
-    "main": "src/index.ts",
+    "main": "dist/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "tsx watch src/index.ts",
-        "build": "tsc"
+        "build": "tsc",
+        "prestart": "npm run build",
+        "start": "node dist/index.js"
     },
     "repository": {
         "type": "git",
@@ -41,4 +43,3 @@
         "mongoose": "^8.11.0"
     }
 }
-

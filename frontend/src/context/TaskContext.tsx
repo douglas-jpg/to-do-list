@@ -18,7 +18,7 @@ import {
 } from '../@types/Tasks';
 
 const api: AxiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: import.meta.env.VITE_API_URL,
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
                     error: null,
                 }));
             } catch (error) {
-                handleError('Erro ao carregar tarefas:', error);
+                handleError('erro ao carregar tarefas:', error);
             }
         };
 
@@ -68,7 +68,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
         setState((prev) => ({
             ...prev,
             isLoading: false,
-            error: error instanceof Error ? error.message : 'Erro desconhecido',
+            error: error instanceof Error ? error.message : 'erro desconhecido',
         }));
     };
 
@@ -85,7 +85,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
                 error: null,
             }));
         } catch (error) {
-            handleError('Erro ao criar tarefa:', error);
+            handleError('erro ao criar tarefa:', error);
         }
     };
 
@@ -101,7 +101,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
                 isLoading: false,
             }));
         } catch (error) {
-            handleError('Erro ao excluir tarefa:', error);
+            handleError('erro ao excluir tarefa:', error);
         }
     };
 
@@ -116,7 +116,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 
             await api.patch(`/task/${id}/done`);
         } catch (error) {
-            handleError('Erro ao atualizar tarefa:', error);
+            handleError('erro ao atualizar tarefa:', error);
             setState((prev) => ({
                 ...prev,
                 tasks: prev.tasks.map((task) =>

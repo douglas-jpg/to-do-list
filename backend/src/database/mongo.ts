@@ -7,22 +7,23 @@ export const MongoClient: IMongoClient = {
 
     async connect() {
         try {
-            const url = process.env.MONGO_URL || '';
-            const username = process.env.MONGO_USERNAME || '';
-            const password = process.env.MONGO_PASSWORD || '';
+            
+            const uri = process.env.MONGO_URI || '';
 
-            const client = new Mongo(
-                `mongodb+srv://${username}:${password}${url}`
-            );
+            
+            // const username = process.env.MONGO_USERNAME || '';
+            // const password = process.env.MONGO_PASSWORD || '';
+            // const uri = `mongodb://${username}:${password}@mongo:27017`;
 
+            const client = new Mongo(uri);
             await client.connect();
 
             this.client = client;
             this.db = client.db('tasks');
 
-            console.log('Conectado ao Mongo com sucesso');
+            console.log('Conectado ao MongoDB com sucesso');
         } catch (error) {
-            console.error('Erro ao conectar ao Mongo:', error);
+            console.error('Erro ao conectar ao MongoDB:', error);
             throw error;
         }
     },
@@ -32,7 +33,7 @@ export const MongoClient: IMongoClient = {
             await this.client.close();
             this.client = null;
             this.db = null;
-            console.log('Conexao com Mongo encerrada.');
+            console.log('Conexão com MongoDB encerrada.');
         }
     },
 };
