@@ -3,8 +3,6 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/douglas-jpg/to-do-list?style=for-the-badge)
 ![GitHub language count](https://img.shields.io/github/languages/count/douglas-jpg/to-do-list?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/douglas-jpg/to-do-list?style=for-the-badge)
-![Bitbucket open issues](https://img.shields.io/bitbucket/issues/douglas-jpg/to-do-list?style=for-the-badge)
-![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/douglas-jpg/to-do-list?style=for-the-badge)
 
 <img src="/frontend/public/imagem.png" alt="Imagem do Site">
 
@@ -35,11 +33,9 @@ docker-compose up -d
 ```
 
 ### Passo 3: Acesse a Aplicação
-
+No seu Navegador acesse:
 ```bash
-Frontend: http://localhost:3000
-
-Backend (API): http://localhost:5000
+http://localhost:3000
 ```
 
 ### Passo 4: Para parar os containers
